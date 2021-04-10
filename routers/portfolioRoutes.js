@@ -1,21 +1,24 @@
 const express = require('express');
 
 const router = express.Router();
-router.param('id', (req, res, next, val) => {
-  console.log(`Portfolio Id is ${val}`);
-  next();
-})
 const {
   getAllPortfolioItems,
   createPortfolioItem,
   getPortfolioItem,
   updatePortfolioItem,
   deletePortfolioItem,
+  checkId,
+  checkRequiredData
 } = require('../controllers/portfoliosController');
+
+
+router.param('id', checkId);
+router.param('body', checkRequiredData)
+
 
 router.route('/')
   .get(getAllPortfolioItems)
-  .post(createPortfolioItem);
+  .post(checkRequiredData, createPortfolioItem);
 router.route('/:id')
   .get(getPortfolioItem)
   .patch(updatePortfolioItem)

@@ -2,6 +2,20 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync(`${__dirname}/../data/portfolio.json`));
 
+exports.checkId = (req, res, next, val) => {
+  if (req.params.id * 1 > data.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid Id',
+    });
+  }
+  next();
+};
+
+exports.checkRequiredData = (req, res, next, val) => {
+  console.log(req.body);
+  next();
+}
 
 exports.getAllPortfolioItems = (req, res) => {
   res.status(200).json({
@@ -30,17 +44,12 @@ exports.getPortfolioItem = (req, res) => {
   let { id } = req.params;
   id *= 1;
   const queryResult = data.find((el) => el.id === id);
-  if (!queryResult) {
-    res.status(404).json({
-      status: 'failure',
-      message: 'Item not found',
-    });
-  } else {
-    res.status(200).json({
-      status: 'success',
-      portfolioItem: queryResult,
-    });
-  }
+
+  res.status(200).json({
+    status: 'success',
+    portfolioItem: queryResult,
+  });
+
 };
 
 
@@ -48,32 +57,21 @@ exports.updatePortfolioItem = (req, res) => {
   let { id } = req.params;
   id *= 1;
   const queryResult = data.find((el) => el.id === id);
-  if (!queryResult) {
-    res.status(404).json({
-      status: 'failure',
-      message: 'Item not found',
-    });
-  } else {
-    res.status(404).json({
-      status: 'success',
-      portfolioItem: queryResult,
-    });
-  }
+
+  res.status(404).json({
+    status: 'success',
+    portfolioItem: queryResult,
+  });
+
 };
 
 exports.deletePortfolioItem = (req, res) => {
   let { id } = req.params;
   id *= 1;
   const queryResult = data.find((el) => el.id === id);
-  if (!queryResult) {
-    res.status(404).json({
-      status: 'failure',
-      message: 'Item not found',
-    });
-  } else {
-    res.status(404).json({
-      status: 'success',
-      portfolioItem: null,
-    });
-  }
+  res.status(404).json({
+    status: 'success',
+    portfolioItem: null,
+  });
+
 };

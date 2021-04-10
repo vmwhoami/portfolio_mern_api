@@ -3,7 +3,7 @@ exports.getAllUsers = (req, res) => {
     status: 'success',
     timeOfUnswer: res.timpulCerrerii,
     data: {
-      users: "here should all the users be",
+      users: 'here should all the users be',
     },
   });
 };
