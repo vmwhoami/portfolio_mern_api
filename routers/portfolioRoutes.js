@@ -1,6 +1,10 @@
 const express = require('express');
 
 const router = express.Router();
+router.param('id', (req, res, next, val) => {
+  console.log(`Portfolio Id is ${val}`);
+  next();
+})
 const {
   getAllPortfolioItems,
   createPortfolioItem,

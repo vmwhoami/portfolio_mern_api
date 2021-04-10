@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const data = JSON.parse(fs.readFileSync(`${__dirname}/../data/portfolio.json`));
 
+
 exports.getAllPortfolioItems = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -35,7 +36,7 @@ exports.getPortfolioItem = (req, res) => {
       message: 'Item not found',
     });
   } else {
-    res.status(404).json({
+    res.status(200).json({
       status: 'success',
       portfolioItem: queryResult,
     });
