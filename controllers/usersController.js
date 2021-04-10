@@ -1,7 +1,14 @@
-const getAllUsers = (req, res) => {
+exports.jsongetAllUsers = (req, res) => {
+  res.status(200).json({
+    status: 'success',
+    timeOfUnswer: res.timpulCerrerii,
 
+
+  });
 };
 
-const createUser = () => {
+exports.jsoncreateUser = () => { };
 
-};
+exports.jsongetUser = () => { };
+exports.jsonupdateUser = () => { };
+exports.jsondeleteUser = () => { };
