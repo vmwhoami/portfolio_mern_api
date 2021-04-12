@@ -1,6 +1,3 @@
-const fs = require('fs');
-
-const data = JSON.parse(fs.readFileSync(`${__dirname}/../data/portfolio.json`));
 
 exports.checkId = (req, res, next, val) => {
   if (req.params.id * 1 > data.length) {
@@ -13,9 +10,8 @@ exports.checkId = (req, res, next, val) => {
 };
 
 exports.checkRequiredData = (req, res, next, val) => {
-  console.log(req.body);
   next();
-}
+};
 
 exports.getAllPortfolioItems = (req, res) => {
   res.status(200).json({
@@ -29,14 +25,9 @@ exports.getAllPortfolioItems = (req, res) => {
 };
 
 exports.createPortfolioItem = (req, res) => {
-  const Id = data[data.length - 1].id + 1;
-  const newItem = { id: Id, ...req.body };
-  data.push(newItem);
-  fs.writeFile(`${__dirname}/data/portfolio.json`, JSON.stringify(data), () => {
-    res.status(201).json({
-      status: 'success',
-      message: 'File written',
-    });
+  res.status(201).json({
+    status: 'success',
+    message: 'Portfolio Item Created',
   });
 };
 
@@ -49,7 +40,6 @@ exports.getPortfolioItem = (req, res) => {
     status: 'success',
     portfolioItem: queryResult,
   });
-
 };
 
 
@@ -62,7 +52,6 @@ exports.updatePortfolioItem = (req, res) => {
     status: 'success',
     portfolioItem: queryResult,
   });
-
 };
 
 exports.deletePortfolioItem = (req, res) => {
@@ -73,5 +62,4 @@ exports.deletePortfolioItem = (req, res) => {
     status: 'success',
     portfolioItem: null,
   });
-
 };

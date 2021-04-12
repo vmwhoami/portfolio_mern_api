@@ -8,12 +8,12 @@ const {
   updatePortfolioItem,
   deletePortfolioItem,
   checkId,
-  checkRequiredData
+  checkRequiredData,
 } = require('../controllers/portfoliosController');
 
 
 router.param('id', checkId);
-router.param('body', checkRequiredData)
+router.param('body', checkRequiredData);
 
 
 router.route('/')

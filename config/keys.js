@@ -1,7 +1,5 @@
 
 module.exports = {
-  mongoURL: 'mongodb+srv://vmwhoami:gi0PONRAUDGLXfb@cluster0.v26nz.mongodb.net/listingsAndReviews?retryWrites=true&w=majority'
-}
+  mongoURL: 'mongodb+srv://vmwhoami:adam2018@portfolio.v26nz.mongodb.net/Portfolio?retryWrites=true&w=majority',
+};
 
-
-// Jgi0PONRAUDGLXfb
