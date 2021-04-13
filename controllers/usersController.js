@@ -33,6 +33,7 @@ exports.createUser = (req, res) => {
             .catch((err) => console.log(err));
         });
       });
+      newUser.save()
     });
 };
 

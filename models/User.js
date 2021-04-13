@@ -9,15 +9,16 @@ const UserSchema = new Schema({
   },
   email: {
     type: String,
-    required: true,
+    required: [true, 'An email must be present'],
+    unique: true
   },
   password: {
     type: String,
-    required: true,
+    required: [true, 'You have to provide a password'],
   },
 },
-{
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  });
 
 module.exports = User = mongoose.model('User', UserSchema);
