@@ -7,18 +7,13 @@ const {
   getPortfolioItem,
   updatePortfolioItem,
   deletePortfolioItem,
-  checkId,
-  checkRequiredData,
 } = require('../controllers/portfoliosController');
 
-
-router.param('id', checkId);
-router.param('body', checkRequiredData);
 
 
 router.route('/')
   .get(getAllPortfolioItems)
-  .post(checkRequiredData, createPortfolioItem);
+  .post(createPortfolioItem);
 router.route('/:id')
   .get(getPortfolioItem)
   .patch(updatePortfolioItem)

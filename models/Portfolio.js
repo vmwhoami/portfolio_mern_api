@@ -14,11 +14,11 @@ const PortfolioSchema = new Schema({
     type: Array,
   },
   image: {
-    type: Text
+    type: String
   }
 },
   {
     timestamps: true,
   });
 
-module.exports = Portfolio = mongoose.model('User', PortfolioSchema);
+module.exports = Portfolio = mongoose.model('Portfolio', PortfolioSchema);
