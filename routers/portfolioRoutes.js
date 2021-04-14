@@ -10,7 +10,6 @@ const {
 } = require('../controllers/portfoliosController');
 
 
-
 router.route('/')
   .get(getAllPortfolioItems)
   .post(createPortfolioItem);
