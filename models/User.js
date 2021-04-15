@@ -6,15 +6,15 @@ const UserSchema = new Schema({
   email: {
     type: String,
     required: [true, 'An email must be present'],
-    unique: true
+    unique: true,
   },
   password: {
     type: String,
     required: [true, 'You have to provide a password'],
   },
 },
-  {
-    timestamps: true,
-  });
+{
+  timestamps: true,
+});
 
 mongoose.model('User', UserSchema);

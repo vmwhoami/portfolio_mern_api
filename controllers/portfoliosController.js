@@ -1,17 +1,18 @@
 const mongoose = require('mongoose');
 require('../models/Portfolio');
-const Portfolio = mongoose.model("Portfolio")
+
+const Portfolio = mongoose.model('Portfolio');
 
 exports.createPortfolioItem = async (req, res) => {
-  const { title, technologies, image } = req.body
+  const { title, technologies, image } = req.body;
   if (!title || !image) {
-    return res.json({ message: "No title or Image provided" })
+    return res.json({ message: 'No title or Image provided' });
   }
   try {
-    let newPortfolioItem = new Portfolio(req.body)
+    const newPortfolioItem = new Portfolio(req.body);
     newPortfolioItem.save((err) => {
-      if (err) return res.send(err)
-    })
+      if (err) return res.send(err);
+    });
     res.status(201).json({
       status: 'success',
       message: 'Portfolio Item Created',
@@ -22,13 +23,12 @@ exports.createPortfolioItem = async (req, res) => {
   } catch (error) {
     console.error(error);
   }
-
 };
 
 exports.getAllPortfolioItems = async (req, res) => {
   try {
-    const allPortfolioItems = await Portfolio.find()
-    const numOfItems = allPortfolioItems.length
+    const allPortfolioItems = await Portfolio.find();
+    const numOfItems = allPortfolioItems.length;
     res.status(200).json({
       status: 'success',
       message: 'Portfolio Items',
@@ -44,8 +44,8 @@ exports.getAllPortfolioItems = async (req, res) => {
 
 
 exports.getPortfolioItem = async (req, res) => {
-  const ObjectId = require('mongodb').ObjectId;
-  let { id } = req.body;
+  const { ObjectId } = require('mongodb');
+  const { id } = req.body;
   try {
     res.status(200).json({
       status: 'sucica',

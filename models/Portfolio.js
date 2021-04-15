@@ -9,17 +9,17 @@ const PortfolioSchema = new Schema({
   },
   title: {
     type: String,
-    require: true
+    require: true,
   },
   technologies: {
     type: Array,
   },
   image: {
-    type: String
-  }
+    type: String,
+  },
 },
-  {
-    timestamps: true,
-  });
+{
+  timestamps: true,
+});
 
 exports.model = Portfolio = mongoose.model('Portfolio', PortfolioSchema);
