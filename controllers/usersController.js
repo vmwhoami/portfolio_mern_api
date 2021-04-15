@@ -1,5 +1,7 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const mongoose = require('mongoose');
+require('../models/User');
+const User = mongoose.model("User")
 
 exports.getAllUsers = (req, res) => {
   res.status(200).json({

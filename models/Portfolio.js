@@ -9,6 +9,7 @@ const PortfolioSchema = new Schema({
   },
   title: {
     type: String,
+    require: true
   },
   technologies: {
     type: Array,
@@ -21,4 +22,4 @@ const PortfolioSchema = new Schema({
     timestamps: true,
   });
 
-module.exports = Portfolio = mongoose.model('Portfolio', PortfolioSchema);
+exports.model = Portfolio = mongoose.model('Portfolio', PortfolioSchema);

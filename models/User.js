@@ -3,10 +3,6 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const UserSchema = new Schema({
-  handle: {
-    type: String,
-    require: true,
-  },
   email: {
     type: String,
     required: [true, 'An email must be present'],
@@ -21,4 +17,4 @@ const UserSchema = new Schema({
     timestamps: true,
   });
 
-module.exports = User = mongoose.model('User', UserSchema);
+mongoose.model('User', UserSchema);
