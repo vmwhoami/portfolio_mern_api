@@ -26,12 +26,13 @@ exports.createPortfolioItem = async (req, res) => {
 };
 
 exports.getAllPortfolioItems = async (req, res) => {
-
   try {
-    const allPortfolioItems = Portfolio.find()
+    const allPortfolioItems = await Portfolio.find()
+    const numOfItems = allPortfolioItems.length
     res.status(200).json({
       status: 'success',
       message: 'Portfolio Items',
+      numberOfItems: numOfItems,
       data: {
         portfolios: allPortfolioItems,
       },

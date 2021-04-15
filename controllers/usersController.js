@@ -3,49 +3,52 @@ const mongoose = require('mongoose');
 require('../models/User');
 const User = mongoose.model("User")
 
-exports.getAllUsers = (req, res) => {
+// Get all users
+exports.getAllUsers = async (req, res) => {
+  const allUsers = await User.find();
   res.status(200).json({
     status: 'success',
     timeOfUnswer: res.timpulCerrerii,
     data: {
-      users: 'here should all the users be',
+      users: allUsers,
     },
   });
 };
 
+// Create USer
 exports.createUser = (req, res) => {
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (user) {
-        return res.status(400).json({
-          email: 'A user has already been regitered with this email',
-        });
-      } else {
-        const newUser = new User({
-          handle: req.body.handle,
-          email: req.body.email,
-          password: req.body.password,
-        });
-      }
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, err, (err, hash) => {
-          if (err) throw (err);
-          newUser.password = hash;
-          newUser.save().then((user) => res.json(user))
-            .catch((err) => console.log(err));
-        });
-      });
-      newUser.save()
-    });
+  const { email, password } = req.body
+  console.log(email, password);
+  User.findOne({ email: email }).then((user) => {
+    if (user) {
+      return res.json({ message: "This email has been taken" })
+    }
+    bcrypt.hash(password, 12).then(hashedPass => {
+      const newUser = new User({ email, password: hashedPass })
+      newUser.save().then(user => {
+        res.status(200).json({
+          status: 'success',
+          message: 'User created',
+          data: {
+            user: user,
+          },
+        })
+      }).catch(err => console.log(err))
+    }).catch(err => console.log(err))
+
+  })
 };
 
-exports.getUser = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    timeOfUnswer: res.timpulCerrerii,
+exports.getUser = async (req, res) => {
+  const { email } = req.body
+  console.log(email);
+  const foundUser = await User.findOne({ email })
+  console.log(foundUser);
+  // res.status(200).json({
+  //   status: 'success',
+  //   timeOfUnswer: res.timpulCerrerii,
 
-
-  });
+  // });
 };
 exports.updateUser = (req, res) => {
   res.status(200).json({
