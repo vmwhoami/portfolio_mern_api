@@ -8,9 +8,9 @@ const {
   updateUser,
   deleteUser,
 } = require('../controllers/usersController');
-
+const requireLogin = require('../middleware/requireLogin')
 router.route('/')
-  .get(getAllUsers)
+  .get(requireLogin, getAllUsers)
   .post(createUser);
 
 router.route('/:id')

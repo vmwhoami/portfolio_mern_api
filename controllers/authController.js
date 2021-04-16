@@ -6,6 +6,7 @@ const User = mongoose.model('User');
 const jwt = require("jsonwebtoken");
 const secret = require('../config/keys').JWT_SECRET
 
+
 exports.Login = async (req, res) => {
   console.log(secret);
   try {
@@ -19,7 +20,9 @@ exports.Login = async (req, res) => {
     if (user) {
       const passMatch = await bcrypt.compare(password, user.password);
       if (passMatch) {
-        res.json({ message: 'Success right password' });
+        const token = jwt.sign({ _id: user._id }, secret)
+        res.json({ token })
+
       } else {
         return res.status(422).json({
           message: 'Email or password is invalid',
