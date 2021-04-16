@@ -8,7 +8,8 @@ const {
   updateUser,
   deleteUser,
 } = require('../controllers/usersController');
-const requireLogin = require('../middleware/requireLogin')
+const requireLogin = require('../middleware/requireLogin');
+
 router.route('/')
   .get(requireLogin, getAllUsers)
   .post(createUser);

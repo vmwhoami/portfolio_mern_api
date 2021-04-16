@@ -61,22 +61,9 @@ exports.getPortfolioItem = async (req, res) => {
 
 
 exports.updatePortfolioItem = (req, res) => {
-  let { id } = req.params;
-  id *= 1;
-  const queryResult = data.find((el) => el.id === id);
 
-  res.status(404).json({
-    status: 'success',
-    portfolioItem: queryResult,
-  });
 };
 
 exports.deletePortfolioItem = (req, res) => {
-  let { id } = req.params;
-  id *= 1;
-  const queryResult = data.find((el) => el.id === id);
-  res.status(404).json({
-    status: 'success',
-    portfolioItem: null,
-  });
+
 };

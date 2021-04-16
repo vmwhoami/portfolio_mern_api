@@ -41,9 +41,8 @@ exports.createUser = (req, res) => {
 
 exports.getUser = async (req, res) => {
   const { email } = req.body;
-  console.log(email);
   const foundUser = await User.findOne({ email });
-  console.log(foundUser);
+
   // res.status(200).json({
   //   status: 'success',
   //   timeOfUnswer: res.timpulCerrerii,
