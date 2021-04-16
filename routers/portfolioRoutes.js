@@ -8,11 +8,12 @@ const {
   updatePortfolioItem,
   deletePortfolioItem,
 } = require('../controllers/portfoliosController');
+const requireLogin = require('../middleware/requireLogin');
 
 
 router.route('/')
   .get(getAllPortfolioItems)
-  .post(createPortfolioItem);
+  .post(requireLogin, createPortfolioItem);
 router.route('/:id')
   .get(getPortfolioItem)
   .patch(updatePortfolioItem)

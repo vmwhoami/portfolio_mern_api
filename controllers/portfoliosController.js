@@ -9,7 +9,13 @@ exports.createPortfolioItem = async (req, res) => {
     return res.json({ message: 'No title or Image provided' });
   }
   try {
-    const newPortfolioItem = new Portfolio(req.body);
+    req.user.password = undefined
+    const newPortfolioItem = new Portfolio({
+      title,
+      technologies,
+      image,
+      createdBy: req.user
+    });
     newPortfolioItem.save((err) => {
       if (err) return res.send(err);
     });
@@ -21,7 +27,10 @@ exports.createPortfolioItem = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    res.status(404).json({
+      message: "fail",
+      error
+    })
   }
 };
 
@@ -38,32 +47,63 @@ exports.getAllPortfolioItems = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error(error);
+    res.status(404).json({
+      message: "fail",
+      error
+    })
   }
 };
 
 
 exports.getPortfolioItem = async (req, res) => {
-  const { ObjectId } = require('mongodb');
-  const { id } = req.body;
+  const { id } = req.body
   try {
+    const portfolio = await Portfolio.findById({ _id: id })
     res.status(200).json({
-      status: 'sucica',
-      message: 'Portfolio',
-      data: {
-        portfolio: porfolioItem,
-      },
-    });
+      status: 'success',
+      data: portfolio
+    })
   } catch (error) {
-    console.error(error);
+    res.status(404).json({
+      message: "fail",
+      error
+    })
+  }
+  return null
+};
+
+
+exports.updatePortfolioItem = async (req, res) => {
+  try {
+    const { id } = req.body
+    const updatedPorfolioItem = await Portfolio.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true
+    })
+    res.json({
+      message: "Updates",
+      data: updatedPorfolioItem
+    })
+  } catch (error) {
+    res.status(404).json({
+      message: "fail",
+      error
+    })
   }
 };
 
-
-exports.updatePortfolioItem = (req, res) => {
-
-};
-
-exports.deletePortfolioItem = (req, res) => {
+exports.deletePortfolioItem = async (req, res) => {
+  try {
+    const { id } = req.body
+    await Portfolio.findByIdAndDelete(id)
+    res.status(204).json({
+      message: "The portfolio Item was deleted",
+    })
+  } catch (error) {
+    res.status(404).json({
+      message: "fail",
+      error
+    })
+  }
 
 };
