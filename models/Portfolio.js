@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+
 const { Schema } = mongoose;
-const { ObjectId } = mongoose.Schema.Types
+const { ObjectId } = mongoose.Schema.Types;
 
 const PortfolioSchema = new Schema({
   title: {
@@ -17,11 +18,11 @@ const PortfolioSchema = new Schema({
   },
   createdBy: {
     type: ObjectId,
-    ref: "User"
-  }
+    ref: 'User',
+  },
 },
-  {
-    timestamps: true,
-  });
+{
+  timestamps: true,
+});
 
-exports.model = Portfolio = mongoose.model('Portfolio', PortfolioSchema);
+mongoose.model('Portfolio', PortfolioSchema);

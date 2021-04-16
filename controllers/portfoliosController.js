@@ -9,15 +9,16 @@ exports.createPortfolioItem = async (req, res) => {
     return res.json({ message: 'No title or Image provided' });
   }
   try {
-    req.user.password = undefined
+    req.user.password = undefined;
     const newPortfolioItem = new Portfolio({
       title,
       technologies,
       image,
-      createdBy: req.user
+      createdBy: req.user,
     });
     newPortfolioItem.save((err) => {
       if (err) return res.send(err);
+      return null;
     });
     res.status(201).json({
       status: 'success',
@@ -28,10 +29,11 @@ exports.createPortfolioItem = async (req, res) => {
     });
   } catch (error) {
     res.status(404).json({
-      message: "fail",
-      error
-    })
+      message: 'fail',
+      error,
+    });
   }
+  return null;
 };
 
 exports.getAllPortfolioItems = async (req, res) => {
@@ -48,62 +50,62 @@ exports.getAllPortfolioItems = async (req, res) => {
     });
   } catch (error) {
     res.status(404).json({
-      message: "fail",
-      error
-    })
+      message: 'fail',
+      error,
+    });
   }
 };
 
 
 exports.getPortfolioItem = async (req, res) => {
-  const { id } = req.body
+  const { id } = req.body;
   try {
-    const portfolio = await Portfolio.findById({ _id: id })
+    const portfolio = await Portfolio.findById({ _id: id });
     res.status(200).json({
       status: 'success',
-      data: portfolio
-    })
+      data: portfolio,
+    });
   } catch (error) {
     res.status(404).json({
-      message: "fail",
-      error
-    })
+      message: 'fail',
+      error,
+    });
   }
-  return null
+  return null;
 };
 
 
 exports.updatePortfolioItem = async (req, res) => {
   try {
-    const { id } = req.body
+    const { id } = req.body;
     const updatedPorfolioItem = await Portfolio.findByIdAndUpdate(id, req.body, {
+      useFindAndModify: false,
       new: true,
-      runValidators: true
-    })
+      runValidators: true,
+    });
     res.json({
-      message: "Updates",
-      data: updatedPorfolioItem
-    })
+      message: 'Updates',
+      data: updatedPorfolioItem,
+    });
   } catch (error) {
     res.status(404).json({
-      message: "fail",
-      error
-    })
+      message: 'fail',
+      error,
+    });
   }
 };
 
 exports.deletePortfolioItem = async (req, res) => {
   try {
-    const { id } = req.body
-    await Portfolio.findByIdAndDelete(id)
+    const { id } = req.body;
+    await Portfolio.findByIdAndDelete(id, { useFindAndModify: false });
     res.status(204).json({
-      message: "The portfolio Item was deleted",
-    })
+      message: 'The portfolio Item was deleted',
+    });
   } catch (error) {
     res.status(404).json({
-      message: "fail",
-      error
-    })
+      message: 'fail',
+      error,
+    });
   }
-
 };

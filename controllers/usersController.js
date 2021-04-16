@@ -17,26 +17,30 @@ exports.getAllUsers = async (req, res) => {
 };
 
 // Create USer
-exports.createUser = (req, res) => {
-  const { email, password } = req.body;
-  console.log(email, password);
-  User.findOne({ email }).then((user) => {
-    if (user) {
+exports.createUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const newUSer = await User.findOne({ email });
+    if (newUSer) {
       return res.json({ message: 'This email has been taken' });
     }
-    bcrypt.hash(password, 12).then((hashedPass) => {
-      const newUser = new User({ email, password: hashedPass });
-      newUser.save().then((user) => {
-        res.status(200).json({
-          status: 'success',
-          message: 'User created',
-          data: {
-            user,
-          },
-        });
-      }).catch((err) => console.log(err));
-    }).catch((err) => console.log(err));
-  });
+    const hashedPass = await bcrypt.hash(password, 12);
+    const newUser = new User({ email, password: hashedPass });
+    const user = await newUser.save();
+    return res.status(200).json({
+      status: 'success',
+      message: 'User created',
+      data: {
+        user,
+      },
+    });
+  } catch (error) {
+    res.status(404).json({
+      message: 'fail',
+      error,
+    });
+  }
+  return null;
 };
 
 exports.getUser = async (req, res) => {
@@ -53,8 +57,6 @@ exports.updateUser = (req, res) => {
   res.status(200).json({
     status: 'success',
     timeOfUnswer: res.timpulCerrerii,
-
-
   });
 };
 exports.deleteUser = (req, res) => {

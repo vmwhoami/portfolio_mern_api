@@ -16,7 +16,7 @@ router.route('/')
   .post(requireLogin, createPortfolioItem);
 router.route('/:id')
   .get(getPortfolioItem)
-  .patch(updatePortfolioItem)
-  .delete(deletePortfolioItem);
+  .patch(requireLogin, updatePortfolioItem)
+  .delete(requireLogin, deletePortfolioItem);
 
 module.exports = router;
