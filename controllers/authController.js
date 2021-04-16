@@ -2,10 +2,12 @@
 const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
 require('../models/User');
-
 const User = mongoose.model('User');
+const jwt = require("jsonwebtoken");
+const secret = require('../config/keys').JWT_SECRET
 
 exports.Login = async (req, res) => {
+  console.log(secret);
   try {
     const { email, password } = req.body;
     if (!email || !password) {
