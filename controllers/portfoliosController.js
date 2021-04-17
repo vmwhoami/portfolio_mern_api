@@ -39,6 +39,7 @@ exports.createPortfolioItem = async (req, res) => {
 
 exports.getAllPortfolioItems = async (req, res) => {
   try {
+    const querryObj = { ...req.query }
     const allPortfolioItems = await Portfolio.find();
     const numOfItems = allPortfolioItems.length;
     res.status(200).json({
@@ -79,6 +80,7 @@ exports.getPortfolioItem = async (req, res) => {
 exports.updatePortfolioItem = async (req, res) => {
 
   try {
+    console.log(req.user);
     const { id } = req.body;
     const portfolioItem = await Portfolio.findById(id);
     const { createdBy } = portfolioItem

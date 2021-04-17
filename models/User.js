@@ -12,9 +12,13 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'You have to provide a password'],
   },
+  admin: {
+    type: Boolean,
+    default: false
+  }
 },
-{
-  timestamps: true,
-});
+  {
+    timestamps: true,
+  });
 
 mongoose.model('User', UserSchema);
