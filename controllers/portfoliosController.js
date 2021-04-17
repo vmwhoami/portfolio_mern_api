@@ -4,6 +4,7 @@ require('../models/Portfolio');
 const Portfolio = mongoose.model('Portfolio');
 
 exports.createPortfolioItem = async (req, res) => {
+
   const { title, technologies, image } = req.body;
   if (!title || !image) {
     return res.json({ message: 'No title or Image provided' });
@@ -76,8 +77,16 @@ exports.getPortfolioItem = async (req, res) => {
 
 
 exports.updatePortfolioItem = async (req, res) => {
+
   try {
     const { id } = req.body;
+    const portfolioItem = await Portfolio.findById(id);
+    const { createdBy } = portfolioItem
+    if (JSON.stringify(createdBy) !== JSON.stringify(req.user._id)) {
+      return res.status(402).json({
+        message: "You have to be logged in as the creator of the post"
+      })
+    }
     const updatedPorfolioItem = await Portfolio.findByIdAndUpdate(id, req.body, {
       useFindAndModify: false,
       new: true,
@@ -98,6 +107,13 @@ exports.updatePortfolioItem = async (req, res) => {
 exports.deletePortfolioItem = async (req, res) => {
   try {
     const { id } = req.body;
+    const portfolioItem = await Portfolio.findById(id);
+    const { createdBy } = portfolioItem
+    if (JSON.stringify(createdBy) !== JSON.stringify(req.user._id)) {
+      return res.status(402).json({
+        message: "You have to be logged in as the creator of this post to delete it"
+      })
+    }
     await Portfolio.findByIdAndDelete(id, { useFindAndModify: false });
     res.status(204).json({
       message: 'The portfolio Item was deleted',
