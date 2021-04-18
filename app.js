@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const UserRouter = require('./routers/userRoutes');
 const PortfolioRouter = require('./routers/portfolioRoutes');
 const LoginRouter = require('./routers/loginRouter');
+const BlogRouter = require(('./routers/blogRouter');
 const connectionStr = require('./config/keys').mongoURL;
 
 const app = experss();
@@ -32,6 +33,7 @@ mongoose.connection.on('connected', () => {
 
 app.use(experss.static(`${__dirname}/data`));
 app.use('/api/v1/portfolios', PortfolioRouter);
+app.use('/api/v1/blog', BlogRouter);
 app.use('/api/v1/users', UserRouter);
 app.use('/api/v1/login', LoginRouter);
 mongoose.connection.on('error', (err) => {
