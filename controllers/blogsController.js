@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 require('../models/Post');
-
 const Portfolio = mongoose.model('Post');
 
 exports.createBlogPost = async (req, res) => {

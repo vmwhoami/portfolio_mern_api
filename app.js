@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const UserRouter = require('./routers/userRoutes');
 const PortfolioRouter = require('./routers/portfolioRoutes');
 const LoginRouter = require('./routers/loginRouter');
-const BlogRouter = require(('./routers/blogRouter');
+const BlogRouter = require('./routers/blogRouter');
 const connectionStr = require('./config/keys').mongoURL;
 
 const app = experss();
