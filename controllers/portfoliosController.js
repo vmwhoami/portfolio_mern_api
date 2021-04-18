@@ -6,6 +6,10 @@ const Portfolio = mongoose.model('Portfolio');
 exports.createPortfolioItem = async (req, res) => {
 
   const { title, technologies, image } = req.body;
+
+  if (!req.user.admin) {
+    return res.json({ message: 'You have to be the site admin to add a portfolio item' });
+  }
   if (!title || !image) {
     return res.json({ message: 'No title or Image provided' });
   }
@@ -80,7 +84,9 @@ exports.getPortfolioItem = async (req, res) => {
 exports.updatePortfolioItem = async (req, res) => {
 
   try {
-    console.log(req.user);
+    if (!req.user.admin) {
+      return res.json({ message: 'You have to be the site admin to update a portfolio item' });
+    }
     const { id } = req.body;
     const portfolioItem = await Portfolio.findById(id);
     const { createdBy } = portfolioItem
@@ -108,6 +114,9 @@ exports.updatePortfolioItem = async (req, res) => {
 
 exports.deletePortfolioItem = async (req, res) => {
   try {
+    if (!req.user.admin) {
+      return res.json({ message: 'You have to be the site admin to update a portfolio item' });
+    }
     const { id } = req.body;
     const portfolioItem = await Portfolio.findById(id);
     const { createdBy } = portfolioItem
