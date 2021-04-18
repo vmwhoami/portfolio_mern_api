@@ -6,19 +6,32 @@ const { ObjectId } = mongoose.Schema.Types;
 const PortfolioSchema = new Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   technologies: {
     type: Array,
-    require: true,
+    required: true,
   },
   image: {
     type: String,
-    require: true,
+    required: true,
+  },
+  githubLink: {
+    type: String,
+    required: true,
+  },
+  liveLink: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
   },
   createdBy: {
     type: ObjectId,
     ref: 'User',
+
   },
 },
 {

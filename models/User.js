@@ -14,11 +14,11 @@ const UserSchema = new Schema({
   },
   admin: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 },
-  {
-    timestamps: true,
-  });
+{
+  timestamps: true,
+});
 
 mongoose.model('User', UserSchema);

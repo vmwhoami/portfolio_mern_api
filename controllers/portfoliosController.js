@@ -4,14 +4,21 @@ require('../models/Portfolio');
 const Portfolio = mongoose.model('Portfolio');
 
 exports.createPortfolioItem = async (req, res) => {
-
-  const { title, technologies, image } = req.body;
+  const {
+    title,
+    technologies,
+    image,
+    githubLink,
+    liveLink,
+    description,
+  } = req.body;
 
   if (!req.user.admin) {
     return res.json({ message: 'You have to be the site admin to add a portfolio item' });
   }
-  if (!title || !image) {
-    return res.json({ message: 'No title or Image provided' });
+
+  if (!title || !image || !githubLink || !liveLink || !description) {
+    return res.json({ message: 'There is some info missing' });
   }
   try {
     req.user.password = undefined;
@@ -19,12 +26,15 @@ exports.createPortfolioItem = async (req, res) => {
       title,
       technologies,
       image,
+      githubLink,
+      liveLink,
+      description,
       createdBy: req.user,
     });
     newPortfolioItem.save((err) => {
-      if (err) return res.send(err);
-      return null;
+      if (err) return res.json({ err });
     });
+
     res.status(201).json({
       status: 'success',
       message: 'Portfolio Item Created',
@@ -38,12 +48,11 @@ exports.createPortfolioItem = async (req, res) => {
       error,
     });
   }
-  return null;
 };
 
 exports.getAllPortfolioItems = async (req, res) => {
   try {
-    const querryObj = { ...req.query }
+    const querryObj = { ...req.query };
     const allPortfolioItems = await Portfolio.find();
     const numOfItems = allPortfolioItems.length;
     res.status(200).json({
@@ -82,18 +91,17 @@ exports.getPortfolioItem = async (req, res) => {
 
 
 exports.updatePortfolioItem = async (req, res) => {
-
   try {
     if (!req.user.admin) {
       return res.json({ message: 'You have to be the site admin to update a portfolio item' });
     }
     const { id } = req.body;
     const portfolioItem = await Portfolio.findById(id);
-    const { createdBy } = portfolioItem
+    const { createdBy } = portfolioItem;
     if (JSON.stringify(createdBy) !== JSON.stringify(req.user._id)) {
       return res.status(402).json({
-        message: "You have to be logged in as the creator of the post"
-      })
+        message: 'You have to be logged in as the creator of the post',
+      });
     }
     const updatedPorfolioItem = await Portfolio.findByIdAndUpdate(id, req.body, {
       useFindAndModify: false,
@@ -119,11 +127,11 @@ exports.deletePortfolioItem = async (req, res) => {
     }
     const { id } = req.body;
     const portfolioItem = await Portfolio.findById(id);
-    const { createdBy } = portfolioItem
+    const { createdBy } = portfolioItem;
     if (JSON.stringify(createdBy) !== JSON.stringify(req.user._id)) {
       return res.status(402).json({
-        message: "You have to be logged in as the creator of this post to delete it"
-      })
+        message: 'You have to be logged in as the creator of this post to delete it',
+      });
     }
     await Portfolio.findByIdAndDelete(id, { useFindAndModify: false });
     res.status(204).json({
