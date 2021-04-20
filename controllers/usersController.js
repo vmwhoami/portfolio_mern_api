@@ -47,11 +47,11 @@ exports.getUser = async (req, res) => {
   const { email } = req.body;
   const foundUser = await User.findOne({ email });
 
-  // res.status(200).json({
-  //   status: 'success',
-  //   timeOfUnswer: res.timpulCerrerii,
-
-  // });
+  res.status(200).json({
+    status: 'success',
+    timeOfUnswer: res.timpulCerrerii,
+    data: foundUser,
+  });
 };
 exports.updateUser = (req, res) => {
   res.status(200).json({

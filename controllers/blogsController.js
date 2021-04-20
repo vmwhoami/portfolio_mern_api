@@ -1,44 +1,40 @@
 const mongoose = require('mongoose');
 require('../models/Post');
-const Portfolio = mongoose.model('Post');
+
+const Post = mongoose.model('Post');
 
 exports.createBlogPost = async (req, res) => {
   const {
     title,
-    technologies,
     image,
-    githubLink,
-    liveLink,
-    description,
+    content,
   } = req.body;
 
-  if (!req.user.admin) {
-    return res.json({ message: 'You have to be the site admin to add a portfolio item' });
+  if (!req.user) {
+    return res.json({ message: 'You have to be the site admin to add a Post item' });
   }
 
-  if (!title || !image || !githubLink || !liveLink || !description) {
+  if (!title || !image || !content) {
     return res.json({ message: 'There is some info missing' });
   }
   try {
     req.user.password = undefined;
-    const newPortfolioItem = new Portfolio({
+    const newPostItem = new Post({
       title,
-      technologies,
       image,
-      githubLink,
-      liveLink,
-      description,
+      content,
       createdBy: req.user,
     });
-    newPortfolioItem.save((err) => {
+    newPostItem.save((err) => {
       if (err) return res.json({ err });
+      return null;
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       status: 'success',
-      message: 'Portfolio Item Created',
+      message: 'Post Item Created',
       data: {
-        portfolio: newPortfolioItem,
+        Post: newPostItem,
       },
     });
   } catch (error) {
@@ -47,19 +43,19 @@ exports.createBlogPost = async (req, res) => {
       error,
     });
   }
+  return null;
 };
 
 exports.getAllBlogPosts = async (req, res) => {
   try {
-    const querryObj = { ...req.query };
-    const allPortfolioItems = await Portfolio.find();
-    const numOfItems = allPortfolioItems.length;
+    const allPostItems = await Post.find();
+    const numOfItems = allPostItems.length;
     res.status(200).json({
       status: 'success',
-      message: 'Portfolio Items',
+      message: 'Post Items',
       numberOfItems: numOfItems,
       data: {
-        portfolios: allPortfolioItems,
+        Posts: allPostItems,
       },
     });
   } catch (error) {
@@ -74,10 +70,10 @@ exports.getAllBlogPosts = async (req, res) => {
 exports.getBlogPost = async (req, res) => {
   const { id } = req.body;
   try {
-    const portfolio = await Portfolio.findById({ _id: id });
+    const post = await Post.findById({ _id: id });
     res.status(200).json({
       status: 'success',
-      data: portfolio,
+      data: post,
     });
   } catch (error) {
     res.status(404).json({
@@ -92,24 +88,25 @@ exports.getBlogPost = async (req, res) => {
 exports.updateBlogPost = async (req, res) => {
   try {
     if (!req.user.admin) {
-      return res.json({ message: 'You have to be the site admin to update a portfolio item' });
+      return res.json({ message: 'You have to be the site admin to update a Post item' });
     }
     const { id } = req.body;
-    const portfolioItem = await Portfolio.findById(id);
-    const { createdBy } = portfolioItem;
-    if (JSON.stringify(createdBy) !== JSON.stringify(req.user._id)) {
+    const PostItem = await Post.findById(id);
+    const { createdBy } = PostItem;
+    const { _id: userId } = req.user;
+    if (JSON.stringify(createdBy) !== JSON.stringify(userId)) {
       return res.status(402).json({
         message: 'You have to be logged in as the creator of the post',
       });
     }
-    const updatedPorfolioItem = await Portfolio.findByIdAndUpdate(id, req.body, {
+    const updatedPostItem = await Post.findByIdAndUpdate(id, req.body, {
       useFindAndModify: false,
       new: true,
       runValidators: true,
     });
-    res.json({
+    return res.json({
       message: 'Updates',
-      data: updatedPorfolioItem,
+      data: updatedPostItem,
     });
   } catch (error) {
     res.status(404).json({
@@ -117,24 +114,20 @@ exports.updateBlogPost = async (req, res) => {
       error,
     });
   }
+  return null;
 };
 
 exports.deleteBlogPost = async (req, res) => {
   try {
     if (!req.user.admin) {
-      return res.json({ message: 'You have to be the site admin to update a portfolio item' });
+      return res.json({ message: 'You have to be the site admin to update a Post item' });
     }
     const { id } = req.body;
-    const portfolioItem = await Portfolio.findById(id);
-    const { createdBy } = portfolioItem;
-    if (JSON.stringify(createdBy) !== JSON.stringify(req.user._id)) {
-      return res.status(402).json({
-        message: 'You have to be logged in as the creator of this post to delete it',
-      });
-    }
-    await Portfolio.findByIdAndDelete(id, { useFindAndModify: false });
-    res.status(204).json({
-      message: 'The portfolio Item was deleted',
+
+
+    await Post.findByIdAndDelete(id, { useFindAndModify: false });
+    return res.status(204).json({
+      message: 'The Post Item was deleted',
     });
   } catch (error) {
     res.status(404).json({
@@ -142,4 +135,5 @@ exports.deleteBlogPost = async (req, res) => {
       error,
     });
   }
+  return null;
 };

@@ -21,8 +21,8 @@ const PostSchema = new Schema({
     ref: 'User',
   },
 },
-  {
-    timestamps: true,
-  });
+{
+  timestamps: true,
+});
 
 mongoose.model('Post', PostSchema);
