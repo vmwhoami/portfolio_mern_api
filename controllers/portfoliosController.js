@@ -33,9 +33,10 @@ exports.createPortfolioItem = async (req, res) => {
     });
     newPortfolioItem.save((err) => {
       if (err) return res.json({ err });
+      return null;
     });
 
-    res.status(201).json({
+    return res.status(201).json({
       status: 'success',
       message: 'Portfolio Item Created',
       data: {
@@ -48,11 +49,11 @@ exports.createPortfolioItem = async (req, res) => {
       error,
     });
   }
+  return null;
 };
 
 exports.getAllPortfolioItems = async (req, res) => {
   try {
-    const querryObj = { ...req.query };
     const allPortfolioItems = await Portfolio.find();
     const numOfItems = allPortfolioItems.length;
     res.status(200).json({
@@ -98,7 +99,8 @@ exports.updatePortfolioItem = async (req, res) => {
     const { id } = req.body;
     const portfolioItem = await Portfolio.findById(id);
     const { createdBy } = portfolioItem;
-    if (JSON.stringify(createdBy) !== JSON.stringify(req.user._id)) {
+    const { _id: userId } = req.user;
+    if (JSON.stringify(createdBy) !== JSON.stringify(userId)) {
       return res.status(402).json({
         message: 'You have to be logged in as the creator of the post',
       });
@@ -118,17 +120,19 @@ exports.updatePortfolioItem = async (req, res) => {
       error,
     });
   }
+  return null;
 };
 
 exports.deletePortfolioItem = async (req, res) => {
   try {
     if (!req.user.admin) {
-      return res.json({ message: 'You have to be the site admin to update a portfolio item' });
+      return res.json({ message: 'You have to be the site admin to delete a portfolio item' });
     }
     const { id } = req.body;
     const portfolioItem = await Portfolio.findById(id);
     const { createdBy } = portfolioItem;
-    if (JSON.stringify(createdBy) !== JSON.stringify(req.user._id)) {
+    const { _id: userId } = req.user;
+    if (JSON.stringify(createdBy) !== JSON.stringify(userId)) {
       return res.status(402).json({
         message: 'You have to be logged in as the creator of this post to delete it',
       });
@@ -143,4 +147,5 @@ exports.deletePortfolioItem = async (req, res) => {
       error,
     });
   }
+  return null;
 };
