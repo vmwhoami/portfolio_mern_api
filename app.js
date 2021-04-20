@@ -1,11 +1,11 @@
 const experss = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const UserRouter = require('./routers/userRoutes');
 const PortfolioRouter = require('./routers/portfolioRoutes');
 const LoginRouter = require('./routers/loginRouter');
 const BlogRouter = require('./routers/blogRouter');
-const connectionStr = require('./config/keys').mongoURL;
 
 const app = experss();
 
@@ -21,7 +21,7 @@ app.use((req, res, next) => {
   next();
 });
 
-mongoose.connect(connectionStr,
+mongoose.connect(process.env.mongoURL,
   {
     useNewUrlParser: true,
     useCreateIndex: true,
