@@ -4,14 +4,37 @@ A RESTFUL API built with Node and Express. It uses JWT to implement Authenticati
 
 ## Routes
 
+#### Portfolios
+
+- GET - /api/v1/portfolios
+- POST - /api/v1/portfolios
+- GET - /api/v1/portfolios/:id
+- PATCH - /api/v1/portfolios/:id
+- DELETE - /api/v1/portfolios/:id
+
+#### Registration:
+
+- POST - /api/v1/users
+
+#### Authentication:
+
+- POST - /api/v1/login
+
+#### Blog:
+
+- GET - /api/v1/blog
+- POST - /api/v1/blog
+- GET - /api/v1/blog/:id
+- PATCH - /api/v1/blog/:id
+- DELETE - /api/v1/blog/:id
+
 ## Built With
 
 - Node v14.15.4
-- RSpec
 
 ## Live Demo
 
-[Live Demo](https://mother-child.netlify.app)
+<!-- [Live Demo](https://mother-child.netlify.app) -->
 
 ## Getting Started
 
@@ -19,9 +42,9 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-Ruby: 2.7.1
-Rails: 6.0.3.4
-Postgres: >=9.5
+- Node v14.15.4
+- Mongodb: "^3.6.5",
+- Mongoose: "^5.12.3",
 
 ### Setup
 
@@ -33,33 +56,32 @@ $ cd danceter
 Install gems with:
 
 ```
-bundle install
+npm install
 ```
 
 Setup database with:
 
-> make sure you have postgress sql installed and running on your system
+> Make sure you have MongoDb Atlas account create the enviroment veriable env file
 
 ```
-   rails db:create
-   rails db:migrate
+   touch .env
+   code .env
 ```
+
+> Create two enviroment variables mongoURL and JWT_SECRET
+
+mongoURL = "place your mongo db Url here replace the password with your mongo Atlas collection password and collection name respectively"
+JWT_SECRET = "Create your own jwt secret"
 
 ### Usage
 
 Start server with:
 
 ```
-    rails server
+   npm start
 ```
 
 Open `http://localhost:3000/` in your browser.
-
-### Run tests
-
-```
-    rpsec
-```
 
 # Authors
 
