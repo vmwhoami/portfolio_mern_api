@@ -1,56 +1,62 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const mongoose = require('mongoose');
+require('../models/User');
 
-exports.getAllUsers = (req, res) => {
+const User = mongoose.model('User');
+
+// Get all users
+exports.getAllUsers = async (req, res) => {
+  const allUsers = await User.find();
   res.status(200).json({
     status: 'success',
     timeOfUnswer: res.timpulCerrerii,
     data: {
-      users: 'here should all the users be',
+      users: allUsers,
     },
   });
 };
 
-exports.createUser = (req, res) => {
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (user) {
-        return res.status(400).json({
-          email: 'A user has already been regitered with this email',
-        });
-      } else {
-        const newUser = new User({
-          handle: req.body.handle,
-          email: req.body.email,
-          password: req.body.password,
-        });
-      }
-      bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(newUser.password, salt, err, (err, hash) => {
-          if (err) throw (err);
-          newUser.password = hash;
-          newUser.save().then((user) => res.json(user))
-            .catch((err) => console.log(err));
-        });
-      });
-      newUser.save()
+// Create USer
+exports.createUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const newUSer = await User.findOne({ email });
+    if (newUSer) {
+      return res.json({ message: 'This email has been taken' });
+    }
+    const hashedPass = await bcrypt.hash(password, 12);
+    const newUser = new User({ email, password: hashedPass });
+    const user = await newUser.save();
+    return res.status(200).json({
+      status: 'success',
+      message: 'User created',
+      data: {
+        user,
+      },
     });
+  } catch (error) {
+    res.status(404).json({
+      message: 'fail',
+      error,
+    });
+  }
+  return null;
 };
 
-exports.getUser = (req, res) => {
+exports.getUser = async (req, res) => {
+  const { email } = req.body;
+  const foundUser = await User.findOne({ email });
+
   res.status(200).json({
     status: 'success',
     timeOfUnswer: res.timpulCerrerii,
-
-
+    data: foundUser,
   });
 };
 exports.updateUser = (req, res) => {
   res.status(200).json({
     status: 'success',
     timeOfUnswer: res.timpulCerrerii,
-
-
   });
 };
 exports.deleteUser = (req, res) => {

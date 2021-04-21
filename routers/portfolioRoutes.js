@@ -7,21 +7,16 @@ const {
   getPortfolioItem,
   updatePortfolioItem,
   deletePortfolioItem,
-  checkId,
-  checkRequiredData,
 } = require('../controllers/portfoliosController');
-
-
-router.param('id', checkId);
-router.param('body', checkRequiredData);
+const requireLogin = require('../middleware/requireLogin');
 
 
 router.route('/')
   .get(getAllPortfolioItems)
-  .post(checkRequiredData, createPortfolioItem);
+  .post(requireLogin, createPortfolioItem);
 router.route('/:id')
   .get(getPortfolioItem)
-  .patch(updatePortfolioItem)
-  .delete(deletePortfolioItem);
+  .patch(requireLogin, updatePortfolioItem)
+  .delete(requireLogin, deletePortfolioItem);
 
 module.exports = router;

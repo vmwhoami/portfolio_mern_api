@@ -1,6 +1,4 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const User = require('../models/User');
 
 const router = express.Router();
 const {
@@ -10,12 +8,13 @@ const {
   updateUser,
   deleteUser,
 } = require('../controllers/usersController');
+const requireLogin = require('../middleware/requireLogin');
 
 router.route('/')
-  .get(getAllUsers)
+  .get(requireLogin, getAllUsers)
   .post(createUser);
 
-router.route(' /:id')
+router.route('/:id')
   .get(getUser)
   .patch(updateUser)
   .delete(deleteUser);
