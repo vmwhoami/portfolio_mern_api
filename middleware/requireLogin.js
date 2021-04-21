@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+
 const secret = process.env.JWT_SECRET;
 
 const User = mongoose.model('User');

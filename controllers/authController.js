@@ -4,6 +4,7 @@ require('../models/User');
 
 const User = mongoose.model('User');
 const jwt = require('jsonwebtoken');
+
 const secret = process.env.JWT_SECRET;
 
 exports.Login = async (req, res) => {
