@@ -6,11 +6,16 @@ const UserRouter = require('./routers/userRoutes');
 const PortfolioRouter = require('./routers/portfolioRoutes');
 const LoginRouter = require('./routers/loginRouter');
 const BlogRouter = require('./routers/blogRouter');
+const cors = require('cors')
 
 const app = experss();
 
 app.use(experss.json());
 app.use(morgan('dev'));
+
+//Implement Cors
+
+app.use(cors())
 
 require('./models/User');
 require('./models/Portfolio');
