@@ -13,7 +13,7 @@ exports.createContact = async (req, res) => {
   } = req.body;
 
   if (!name || !email || !message) {
-    return res.json({ message: 'There is some info missing' });
+    return res.status(400).json({ message: 'There is some info missing' });
   }
   try {
     const newContact = new Contact({
