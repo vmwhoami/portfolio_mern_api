@@ -1,4 +1,4 @@
-# Mother and Child Hospital JSON API WITH RAILS 6
+# Portfolio Express JSON API
 
 A RESTFUL API built with Node and Express. It uses JWT to implement Authentication & Authorization.
 
