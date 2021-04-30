@@ -9,19 +9,18 @@ exports.createContact = async (req, res) => {
     name,
     email,
     subject,
-    message
+    message,
   } = req.body;
 
   if (!name || !email || !message) {
     return res.json({ message: 'There is some info missing' });
   }
   try {
-
     const newContact = new Contact({
       name,
       email,
       subject,
-      message
+      message,
     });
     newContact.save((err) => {
       if (err) return res.json({ err });

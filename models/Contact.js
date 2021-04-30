@@ -13,15 +13,15 @@ const ContactSchema = new Schema({
     required: true,
   },
   subject: {
-    type: String
+    type: String,
   },
   message: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 },
-  {
-    timestamps: true,
-  });
+{
+  timestamps: true,
+});
 
 mongoose.model('Contact', ContactSchema);
