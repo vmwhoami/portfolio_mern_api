@@ -2,20 +2,20 @@ const experss = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const cors = require('cors');
 const UserRouter = require('./routers/userRoutes');
 const PortfolioRouter = require('./routers/portfolioRoutes');
 const LoginRouter = require('./routers/loginRouter');
 const BlogRouter = require('./routers/blogRouter');
-const cors = require('cors')
 
 const app = experss();
 
 app.use(experss.json());
 app.use(morgan('dev'));
 
-//Implement Cors
+// Implement Cors
 
-app.use(cors())
+app.use(cors());
 
 require('./models/User');
 require('./models/Portfolio');
