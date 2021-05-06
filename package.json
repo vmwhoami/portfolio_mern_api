@@ -6,7 +6,8 @@
   "scripts": {
     "debug": "nodemon --inspect server.js",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "ndb": "ndb server.js"
   },
   "author": "",
   "license": "ISC",
