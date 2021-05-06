@@ -36,15 +36,22 @@ mongoose.connect(process.env.mongoURL,
 mongoose.connection.on('connected', () => {
   console.log('Connection established');
 });
-
+mongoose.connection.on('error', (err) => {
+  console.log('There was an error connecting to the DB', err);
+});
 app.use(experss.static(`${__dirname}/data`));
 app.use('/api/v1/contacts', ContactsRouter);
 app.use('/api/v1/portfolios', PortfolioRouter);
 app.use('/api/v1/blog', BlogRouter);
 app.use('/api/v1/users', UserRouter);
 app.use('/api/v1/login', LoginRouter);
-mongoose.connection.on('error', (err) => {
-  console.log('There was an error connecting to the DB', err);
-});
+app.all('*', (req, res, next) => {
+  res.status(404).json({
+    status: "fail",
+    message: `Can't find ${req.originalUrl} on this server!`
+  })
+  next()
+})
+
 
 module.exports = app;
