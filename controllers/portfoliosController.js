@@ -41,7 +41,7 @@ exports.createPortfolioItem = catchErrorAsync(async (req, res, next) => {
     },
   });
 });
-
+/* eslint-disable */
 exports.getAllPortfolioItems = catchErrorAsync(async (req, res, next) => {
   const queryObj = { ...req.query };
   const excludedFields = ['page', 'sort', 'limit', 'fields'];
@@ -67,7 +67,7 @@ exports.getAllPortfolioItems = catchErrorAsync(async (req, res, next) => {
   });
 });
 
-
+/* eslint-disable */
 exports.getPortfolioItem = catchErrorAsync(async (req, res, next) => {
   const { id } = req.body;
   const portfolio = await Portfolio.findById({ _id: id });
