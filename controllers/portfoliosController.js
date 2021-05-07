@@ -3,11 +3,9 @@ require('../models/Portfolio');
 
 const Portfolio = mongoose.model('Portfolio');
 
-const catchErrorAsync = (fn) => {
-  return (req, res, next) => {
-    fn(req, res, next).catch(next)
-  }
-}
+const catchErrorAsync = (fn) => (req, res, next) => {
+  fn(req, res, next).catch(next);
+};
 
 exports.createPortfolioItem = catchErrorAsync(async (req, res, next) => {
   const {
@@ -48,8 +46,7 @@ exports.createPortfolioItem = catchErrorAsync(async (req, res, next) => {
       portfolio: newPortfolioItem,
     },
   });
-
-})
+});
 
 exports.getAllPortfolioItems = catchErrorAsync(async (req, res, next) => {
   const queryObj = { ...req.query };
@@ -85,7 +82,7 @@ exports.getPortfolioItem = catchErrorAsync(async (req, res, next) => {
     data: portfolio,
   });
   return null;
-})
+});
 
 
 exports.updatePortfolioItem = catchErrorAsync(async (req, res, next) => {
@@ -110,7 +107,6 @@ exports.updatePortfolioItem = catchErrorAsync(async (req, res, next) => {
     message: 'Updates',
     data: updatedPorfolioItem,
   });
-
 });
 
 exports.deletePortfolioItem = catchErrorAsync(async (req, res, next) => {

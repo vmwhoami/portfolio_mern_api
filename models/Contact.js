@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const sendMail = require('../utils/email');
+
 const { Schema } = mongoose;
 
 
@@ -20,12 +21,12 @@ const ContactSchema = new Schema({
     required: true,
   },
 },
-  {
-    timestamps: true,
-  });
+{
+  timestamps: true,
+});
 
 ContactSchema.post('save', (doc, next) => {
   sendMail(doc);
-  next()
-})
+  next();
+});
 mongoose.model('Contact', ContactSchema);

@@ -2,7 +2,9 @@ const nodemailer = require('nodemailer');
 const sendgrid = require('nodemailer-sendgrid-transport');
 
 const sendEmail = async (options) => {
-  const { name, email, subject, message } = options
+  const {
+    name, email, subject, message,
+  } = options;
   const opt = {
     auth: {
       api_key: process.env.SENDGRID,
@@ -19,7 +21,6 @@ const sendEmail = async (options) => {
     <p><strong>With the message being:  </strong>${message}</p>
     `,
   });
-
 };
 
 module.exports = sendEmail;
