@@ -1,28 +1,22 @@
 const mongoose = require('mongoose');
 require('../models/Portfolio');
+const catchErrorAsync = require('../utils/catchAsyncErrors');
+const AppError = require('../utils/appError');
 
 const Portfolio = mongoose.model('Portfolio');
 
-const catchErrorAsync = (fn) => (req, res, next) => {
-  fn(req, res, next).catch(next);
-};
-
 exports.createPortfolioItem = catchErrorAsync(async (req, res, next) => {
   const {
-    title,
-    technologies,
-    image,
-    githubLink,
-    liveLink,
-    description,
+    title, technologies, image,
+    githubLink, liveLink, description,
   } = req.body;
 
   if (!req.user.admin) {
-    return res.json({ message: 'You have to be the site admin to add a portfolio item' });
+    return next(new AppError('You have to be the site admin to add a portfolio item', 401));
   }
 
   if (!title || !image || !githubLink || !liveLink || !description) {
-    return res.json({ message: 'There is some info missing' });
+    return next(new AppError('There is some info missing', 406));
   }
   req.user.password = undefined;
   const newPortfolioItem = new Portfolio({
@@ -87,7 +81,7 @@ exports.getPortfolioItem = catchErrorAsync(async (req, res, next) => {
 
 exports.updatePortfolioItem = catchErrorAsync(async (req, res, next) => {
   if (!req.user.admin) {
-    return res.json({ message: 'You have to be the site admin to update a portfolio item' });
+    return next(new AppError('You have to be the site admin to add a portfolio item', 401));
   }
   const { id } = req.body;
   const portfolioItem = await Portfolio.findById(id);
@@ -111,20 +105,17 @@ exports.updatePortfolioItem = catchErrorAsync(async (req, res, next) => {
 
 exports.deletePortfolioItem = catchErrorAsync(async (req, res, next) => {
   if (!req.user.admin) {
-    return res.json({ message: 'You have to be the site admin to delete a portfolio item' });
+    return next(new AppError('You have to be the site admin to delete a portfolio item', 401));
   }
   const { id } = req.body;
   const portfolioItem = await Portfolio.findById(id);
   const { createdBy } = portfolioItem;
   const { _id: userId } = req.user;
   if (JSON.stringify(createdBy) !== JSON.stringify(userId)) {
-    return res.status(402).json({
-      message: 'You have to be logged in as the creator of this post to delete it',
-    });
+    return next(new AppError('You have to be logged in as the creator of this post to delete it', 402));
   }
   await Portfolio.findByIdAndDelete(id, { useFindAndModify: false });
-  res.status(204).json({
+  return res.status(204).json({
     message: 'The portfolio Item was deleted',
   });
-  return null;
 });
