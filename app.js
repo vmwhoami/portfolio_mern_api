@@ -8,9 +8,9 @@ const PortfolioRouter = require('./routers/portfolioRoutes');
 const LoginRouter = require('./routers/loginRouter');
 const BlogRouter = require('./routers/blogRouter');
 const ContactsRouter = require('./routers/contactsRouter');
-
+const AppError = require('./utils/appError')
+const globalErrorHandler = require('./controllers/errorController');
 const app = experss();
-
 app.use(experss.json());
 app.use(morgan('dev'));
 
@@ -45,13 +45,12 @@ app.use('/api/v1/portfolios', PortfolioRouter);
 app.use('/api/v1/blog', BlogRouter);
 app.use('/api/v1/users', UserRouter);
 app.use('/api/v1/login', LoginRouter);
+
 app.all('*', (req, res, next) => {
-  res.status(404).json({
-    status: "fail",
-    message: `Can't find ${req.originalUrl} on this server!`
-  })
-  next()
+
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`))
 })
 
+app.use(globalErrorHandler)
 
 module.exports = app;
