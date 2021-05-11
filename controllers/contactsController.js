@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 require('../models/Contact');
 
 const catchErrorAsync = require('../utils/catchAsyncErrors');
-const AppError = require('../utils/appError')
+const AppError = require('../utils/appError');
+
 const Contact = mongoose.model('Contact');
 
 exports.createContact = catchErrorAsync(async (req, res, next) => {
-
   const {
     name,
     email,
@@ -15,7 +15,7 @@ exports.createContact = catchErrorAsync(async (req, res, next) => {
   } = req.body;
 
   if (!name || !email || !message) {
-    return next(new AppError('There is some info missing', 400))
+    return next(new AppError('There is some info missing', 400));
   }
 
   const newContact = new Contact({
@@ -24,9 +24,9 @@ exports.createContact = catchErrorAsync(async (req, res, next) => {
     subject,
     message,
   });
-  const contact = await newContact.save()
+  const contact = await newContact.save();
   if (!contact) {
-    return next(new AppError("Sotething went over the board", 400));
+    return next(new AppError('Sotething went over the board', 400));
   }
   return res.status(201).json({
     status: 'success',
@@ -35,5 +35,4 @@ exports.createContact = catchErrorAsync(async (req, res, next) => {
       Contact: newContact,
     },
   });
-
 });
