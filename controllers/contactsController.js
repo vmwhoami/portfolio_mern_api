@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 require('../models/Contact');
 
-
+const catchErrorAsync = require('../utils/catchAsyncErrors');
+const AppError = require('../utils/appError')
 const Contact = mongoose.model('Contact');
 
-
-exports.createContact = async (req, res) => {
+exports.createContact = catchErrorAsync(async (req, res) => {
   const {
     name,
     email,
@@ -14,32 +14,26 @@ exports.createContact = async (req, res) => {
   } = req.body;
 
   if (!name || !email || !message) {
-    return res.status(400).json({ message: 'There is some info missing' });
+    return new AppError('There is some info missing', 400)
   }
-  try {
-    const newContact = new Contact({
-      name,
-      email,
-      subject,
-      message,
-    });
-    newContact.save((err) => {
-      if (err) return res.json({ err });
-      return null;
-    });
 
-    return res.status(201).json({
-      status: 'success',
-      message: 'Contact Saved',
-      data: {
-        Contact: newContact,
-      },
-    });
-  } catch (error) {
-    res.status(404).json({
-      message: 'fail',
-      error,
-    });
-  }
-  return null;
-};
+  const newContact = new Contact({
+    name,
+    email,
+    subject,
+    message,
+  });
+  newContact.save((err) => {
+    if (err) return res.json({ err });
+    return null;
+  });
+
+  return res.status(201).json({
+    status: 'success',
+    message: 'Contact Saved',
+    data: {
+      Contact: newContact,
+    },
+  });
+
+});
