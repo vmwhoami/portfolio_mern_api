@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const catchErrorAsync = require('../utils/catchAsyncErrors');
+
 const secret = process.env.JWT_SECRET;
 const AppError = require('../utils/appError');
 

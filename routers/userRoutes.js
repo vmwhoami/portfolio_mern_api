@@ -9,7 +9,8 @@ const {
   deleteUser,
 } = require('../controllers/usersController');
 const requireLogin = require('../middleware/requireLogin');
-const requireAdmin = require('../middleware/requireAdmin')
+const requireAdmin = require('../middleware/requireAdmin');
+
 router.route('/')
   .get(requireLogin, requireAdmin, getAllUsers)
   .post(createUser);
