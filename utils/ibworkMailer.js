@@ -1,9 +1,9 @@
 const nodemailer = require('nodemailer');
 const sendgrid = require('nodemailer-sendgrid-transport');
 
-const sendEmail = async (options) => {
+const ibworkMailer = async (options) => {
   const {
-    name, email, phone, message, select
+    name, email, subject, message,
   } = options;
   const opt = {
     auth: {
@@ -12,7 +12,7 @@ const sendEmail = async (options) => {
   };
   const transport = nodemailer.createTransport(sendgrid(opt));
   await transport.sendMail({
-    to: 'vitalimelnic@yahoo.com',
+    to: 'vmwhoami@gmail.com',
     from: 'thenewyoungcoder@gmail.com',
     subject: 'New message from vitaliemelnic.tech',
     html: `<h2>You have got an email from ${name}</h2>
@@ -23,4 +23,4 @@ const sendEmail = async (options) => {
   });
 };
 
-module.exports = sendEmail;
+module.exports = ibworkMailer;
