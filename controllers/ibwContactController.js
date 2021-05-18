@@ -1,28 +1,29 @@
 const mongoose = require('mongoose');
-require('../models/Contact');
-
+require('../models/Ibworkout');
 const catchErrorAsync = require('../utils/catchAsyncErrors');
 const AppError = require('../utils/appError');
 
-const Contact = mongoose.model('Contact');
+const Ibworkout = mongoose.model('Ibworkout');
 
 exports.ibwContact = catchErrorAsync(async (req, res, next) => {
   const {
     name,
     email,
-    subject,
+    phone,
     message,
+    select,
   } = req.body;
 
-  if (!name || !email || !message) {
+  if (!name || !email || !phone) {
     return next(new AppError('There is some info missing', 400));
   }
 
-  const newContact = new Contact({
+  const newContact = new Ibworkout({
     name,
     email,
-    subject,
+    phone,
     message,
+    select,
   });
   const contact = await newContact.save();
   if (!contact) {

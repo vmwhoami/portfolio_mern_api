@@ -15,18 +15,18 @@ const IBworkoutSchema = new Schema({
   },
   phone: {
     type: Number,
-    required: true
+    required: true,
   },
   message: {
     type: String,
   },
   select: {
     type: String,
-  }
+  },
 },
-  {
-    timestamps: true,
-  });
+{
+  timestamps: true,
+});
 
 IBworkoutSchema.post('save', (doc, next) => {
   ibworkMailer(doc);

@@ -3,7 +3,7 @@ const sendgrid = require('nodemailer-sendgrid-transport');
 
 const ibworkMailer = async (options) => {
   const {
-    name, email, subject, message,
+    name, email, phone, message, select,
   } = options;
   const opt = {
     auth: {
@@ -12,12 +12,13 @@ const ibworkMailer = async (options) => {
   };
   const transport = nodemailer.createTransport(sendgrid(opt));
   await transport.sendMail({
-    to: 'vmwhoami@gmail.com',
+    to: 'vitalimelnic@yahoo.com',
     from: 'thenewyoungcoder@gmail.com',
     subject: 'New message from vitaliemelnic.tech',
     html: `<h2>You have got an email from ${name}</h2>
     <h4>This person's email is: ${email}</h4>
-    <h3>Subject:  ${subject}</h3>
+    <h3>Phone:  ${phone}</h3>
+    <p><strong>Purpose:  </strong>${select}</p>
     <p><strong>With the message being:  </strong>${message}</p>
     `,
   });
