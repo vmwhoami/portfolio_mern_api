@@ -9,14 +9,14 @@ const {
   deleteUser,
 } = require('../controllers/usersController');
 const requireLogin = require('../middleware/requireLogin');
-
+const requireAdmin = require('../middleware/requireAdmin')
 router.route('/')
-  .get(requireLogin, getAllUsers)
+  .get(requireLogin, requireAdmin, getAllUsers)
   .post(createUser);
 
 router.route('/:id')
   .get(getUser)
-  .patch(updateUser)
+  .patch(requireAdmin, updateUser)
   .delete(deleteUser);
 
 module.exports = router;
