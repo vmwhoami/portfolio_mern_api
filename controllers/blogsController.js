@@ -39,7 +39,7 @@ exports.createBlogPost = catchErrorAsync(async (req, res, next) => {
     },
   });
 });
-
+// eslint-disable-next-line no-unused-vars
 exports.getAllBlogPosts = catchErrorAsync(async (req, res, next) => {
   const allPostItems = await Post.find();
   const numOfItems = allPostItems.length;
@@ -53,7 +53,7 @@ exports.getAllBlogPosts = catchErrorAsync(async (req, res, next) => {
   });
 });
 
-
+// eslint-disable-next-line no-unused-vars
 exports.getBlogPost = catchErrorAsync(async (req, res, next) => {
   const { id } = req.body;
   const post = await Post.findById({ _id: id });
@@ -62,7 +62,6 @@ exports.getBlogPost = catchErrorAsync(async (req, res, next) => {
     data: post,
   });
 });
-
 
 exports.updateBlogPost = catchErrorAsync(async (req, res, next) => {
   if (!req.user.admin) {
