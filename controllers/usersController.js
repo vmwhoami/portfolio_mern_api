@@ -6,7 +6,8 @@ require('../models/User');
 const User = mongoose.model('User');
 
 // Get all users
-exports.getAllUsers = async (req, res) => {
+// eslint-disable-next-line no-unused-vars
+exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
   const allUsers = await User.find();
   res.status(200).json({
     status: 'success',
@@ -15,7 +16,7 @@ exports.getAllUsers = async (req, res) => {
       users: allUsers,
     },
   });
-};
+});
 
 // Create USer
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
@@ -35,7 +36,8 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-exports.getUser = async (req, res) => {
+// eslint-disable-next-line no-unused-vars
+exports.getUser = catchAsyncErrors(async (req, res, next) => {
   const { email } = req.body;
   const foundUser = await User.findOne({ email });
 
@@ -44,13 +46,15 @@ exports.getUser = async (req, res) => {
     timeOfUnswer: res.timpulCerrerii,
     data: foundUser,
   });
-};
+});
+
 exports.updateUser = (req, res) => {
   res.status(200).json({
     status: 'success',
     timeOfUnswer: res.timpulCerrerii,
   });
 };
+
 exports.deleteUser = (req, res) => {
   res.status(200).json({
     status: 'success',
