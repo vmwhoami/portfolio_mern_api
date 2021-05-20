@@ -1,38 +1,26 @@
-const bcrypt = require('bcryptjs');
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 require('../models/User');
+const catchErrorAsync = require('../utils/catchAsyncErrors');
+const AppError = require('../utils/appError');
 
 const User = mongoose.model('User');
-const jwt = require('jsonwebtoken');
 
 const secret = process.env.JWT_SECRET;
 
-exports.Login = async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(422).json({
-        message: 'Email and password must be present',
-      });
-    }
-    const user = await User.findOne({ email });
-    if (user) {
-      const passMatch = await bcrypt.compare(password, user.password);
-      if (passMatch) {
-        const token = jwt.sign({ id: user.id }, secret);
-        res.json({ token });
-      } else {
-        return res.status(422).json({
-          message: 'Email or password is invalid',
-        });
-      }
-    } else {
-      return res.status(404).json({
-        message: 'The user with this email does not exist',
-      });
-    }
-  } catch (error) {
-    return error;
+exports.Login = catchErrorAsync(async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return next(new AppError('Email and password must be present', 422));
   }
-  return null;
-};
+  const user = await User.findOne({ email }).select('+password');
+  if (user) {
+    const passMatch = await user.correctPassword(password, user.password);
+    if (passMatch) {
+      const token = jwt.sign({ id: user.id }, secret);
+      return res.json({ success: 'Successfully loged in', token });
+    }
+    return next(new AppError('Email or password is invalid', 422));
+  }
+  return next(new AppError('Wrong credentials', 404));
+});

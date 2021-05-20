@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
 const catchAsyncErrors = require('../utils/catchAsyncErrors');
 const AppError = require('../utils/appError');
 require('../models/User');
@@ -20,6 +21,7 @@ exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
 
 // Create USer
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
+  const secret = process.env.JWT_SECRET;
   const { email, password } = req.body;
   const newUSer = await User.findOne({ email });
   if (newUSer) {
@@ -27,9 +29,12 @@ exports.createUser = catchAsyncErrors(async (req, res, next) => {
   }
   const newUser = new User({ email, password });
   const user = await newUser.save();
+  // eslint-disable-next-line
+  const token = jwt.sign({ id: user._id }, secret, { expiresIn: '10d' });
   return res.status(200).json({
     status: 'success',
     message: 'User created',
+    token,
     data: {
       user,
     },
