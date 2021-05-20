@@ -16,6 +16,10 @@ const PostSchema = new Schema({
     type: String,
     required: true,
   },
+  slug: {
+    type: String,
+    unique: true,
+  },
   createdBy: {
     type: ObjectId,
     ref: 'User',
@@ -23,6 +27,12 @@ const PostSchema = new Schema({
 },
 {
   timestamps: true,
+});
+
+PostSchema.pre('save', async function (next) {
+  const slugify = (str) => str.trim().toLowerCase().split(' ').join('-');
+  this.slug = slugify(this.title);
+  return next();
 });
 
 mongoose.model('Post', PostSchema);

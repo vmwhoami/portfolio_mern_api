@@ -28,14 +28,24 @@ const PortfolioSchema = new Schema({
     type: String,
     required: true,
   },
+  slug: {
+    type: String,
+    unique: true,
+  },
   createdBy: {
     type: ObjectId,
     ref: 'User',
-
   },
 },
 {
   timestamps: true,
 });
+
+PortfolioSchema.pre('save', async function (next) {
+  const slugify = (str) => str.trim().toLowerCase().split(' ').join('-');
+  this.slug = slugify(this.title);
+  return next();
+});
+
 
 mongoose.model('Portfolio', PortfolioSchema);
