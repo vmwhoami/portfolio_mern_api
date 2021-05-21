@@ -18,7 +18,9 @@ exports.Login = catchErrorAsync(async (req, res, next) => {
     const passMatch = await user.correctPassword(password, user.password);
     if (passMatch) {
       const token = jwt.sign({ id: user.id }, secret);
-      return res.json({ success: 'Successfully loged in', token });
+      return res.json({
+        success: 'Successfully loged in', token, email: user.email, admin: user.admin,
+      });
     }
     return next(new AppError('Email or password is invalid', 422));
   }
