@@ -14,7 +14,7 @@ const requireLogin = require('../middleware/requireLogin');
 router.route('/')
   .get(getAllPortfolioItems)
   .post(requireLogin, createPortfolioItem);
-router.route('/:id')
+router.route('/:title')
   .get(getPortfolioItem)
   .patch(requireLogin, updatePortfolioItem)
   .delete(requireLogin, deletePortfolioItem);

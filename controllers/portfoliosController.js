@@ -69,8 +69,8 @@ exports.getAllPortfolioItems = catchErrorAsync(async (req, res, next) => {
 
 /* eslint-disable */
 exports.getPortfolioItem = catchErrorAsync(async (req, res, next) => {
-  const { id } = req.body;
-  const portfolio = await Portfolio.findById({ _id: id });
+  const { title } = req.params;
+  const portfolio = await Portfolio.find({ slug: title });
   res.status(200).json({
     status: 'success',
     data: portfolio,
