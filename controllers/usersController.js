@@ -6,7 +6,7 @@ require('../models/User');
 
 const User = mongoose.model('User');
 
-// Get all users
+
 // eslint-disable-next-line no-unused-vars
 exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
   const allUsers = await User.find();
@@ -19,7 +19,6 @@ exports.getAllUsers = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-// Create USer
 exports.createUser = catchAsyncErrors(async (req, res, next) => {
   const secret = process.env.JWT_SECRET;
   const { email, password } = req.body;

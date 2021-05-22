@@ -10,8 +10,6 @@ const User = mongoose.model('User');
 
 module.exports = catchErrorAsync(async (req, res, next) => {
   const { authorization } = req.headers;
-
-
   if (!authorization) {
     return next(new AppError('You have to login to perform this action', 401));
   }

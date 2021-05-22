@@ -7,6 +7,30 @@ const AppError = require('../utils/appError');
 const User = mongoose.model('User');
 
 const secret = process.env.JWT_SECRET;
+const expires = process.env.EXPIRES_IN;
+const cookieExpiration = process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000;
+const signToken = (id) => jwt.sign({ id }, secret, {
+  expiresIn: expires,
+});
+
+const createSendToke = (user, statusCode, res) => {
+  // eslint-disable-next-line
+  const token = signToken(user._id);
+
+  res.cookie('vmwhoami', token, {
+    expires: new Date(Date.now() + cookieExpiration),
+    secure: true,
+    httpOnly: true,
+  });
+  return res.status(statusCode).json({
+    status: 'success',
+    token,
+    data: {
+      email: user.email,
+      admin: user.admin,
+    },
+  });
+};
 
 exports.Login = catchErrorAsync(async (req, res, next) => {
   const { email, password } = req.body;
@@ -17,10 +41,7 @@ exports.Login = catchErrorAsync(async (req, res, next) => {
   if (user) {
     const passMatch = await user.correctPassword(password, user.password);
     if (passMatch) {
-      const token = jwt.sign({ id: user.id }, secret);
-      return res.json({
-        success: 'Successfully loged in', token, email: user.email, admin: user.admin,
-      });
+      return createSendToke(user, 201, res);
     }
     return next(new AppError('Email or password is invalid', 422));
   }
