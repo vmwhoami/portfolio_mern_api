@@ -19,7 +19,7 @@ const createSendToke = (user, statusCode, res) => {
 
   res.cookie('vmwhoami', token, {
     expires: new Date(Date.now() + cookieExpiration),
-    // secure: true,
+    secure: true,
     httpOnly: true,
   });
   return res.status(statusCode).json({
